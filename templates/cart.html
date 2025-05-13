@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sitegpt.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        /* Основные стили */
+.cart-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.cart-items {
+    display: grid;  /* Используем CSS Grid */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  /* Автоматическое создание колонок */
+    gap: 20px;
+}
+
+.cart-item {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.cart-item img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.cart-item-details {
+    margin-top: 10px;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="navbar">
+            <ul class="nav-links" id="navLinks">
+                <a href="{{ url_for('home') }}">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='img/lastlogo.png') }}" alt="Logo">
+                    </div>
+                </a>
+
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                        <!-- Для админа: кнопки управления комиксами и пользователями -->
+                        <li><a href="{{ url_for('add_comic') }}" class="button button-add">Add Comic</a></li>
+                        <li><a href="{{ url_for('manage_users') }}" class="button button-add">Manage Users</a></li>
+                    {% else %}
+                        <!-- Для обычного пользователя: кнопки для корзины -->
+                        <li><a href="{{ url_for('cart') }}" class="button">Cart 
+                            {% if current_user.cart_items %}
+                                ({{ current_user.cart_items|length }})
+                            {% else %}
+                                (0)
+                            {% endif %}
+                        </a></li>
+                    {% endif %}
+                {% else %}
+                {% endif %}
+                <li><a href="{{ url_for('login') }}" class="button">Change account</a></li>
+            </ul>
+        </nav>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message-container">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <main>
+            {% if cart_items %}
+                <div class="cart-container">
+                    <ul class="cart-items">
+                        {% for item in cart_items %}
+                        <li class="cart-item">
+                            <img src="{{ url_for('static', filename=item.comic.image_url) }}" alt="{{ item.comic.title }}">
+                            <div class="cart-item-details">
+                                <h3>{{ item.comic.title }}</h3>
+                                <p><strong>Цена:</strong> {{ item.comic.price }}₸</p>
+                                <form action="{{ url_for('delete_cart_item', item_id=item.id) }}" method="POST">
+                                    <button type="submit" class="button button-danger" onclick="return confirm('Вы уверены, что хотите удалить этот товар из корзины?');">Удалить</button>
+                                </form>
+                    
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <!-- Кнопка для перехода к оформлению заказа -->
+                    <div class="cart-footer">
+                        <a href="{{ url_for('checkout') }}" class="button button-checkout">Перейти к оформлению</a>
+                    </div>
+                </div>
+            {% else %}
+            <p class="empty-cart-message">Your cart is empty.</p>
+            {% endif %}
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Kazakh Comics Store. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+    </footer>   
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.flash-message-container').fadeOut('slow');
+            }, 900);  // Убираем через 3 секунды
+        });
+    </script>
+</body>
+</html>

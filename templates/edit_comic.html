@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comic</title>
+    <style>
+        body {
+            background: url('{{ url_for("static", filename="img/onlineread.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .page-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.507); /* Dark overlay */
+        }
+
+        .form-wrapper {
+            background: rgba(255, 255, 255, 0.9); /* Slightly transparent white background */
+            padding: 10px 0px;
+            width: 450px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #483e31;
+            margin-bottom: 5px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        /* Input and Textarea */
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="file"],
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        form input[type="file"] {
+            padding: 7px;
+        }
+
+        form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            border-color: #483e31;
+            outline: none;
+            box-shadow: 0 0 6px rgba(74, 105, 189, 0.2);
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #2f3542;
+            font-size: 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        /* Button Styles */
+        form button {
+            width: 100%;
+            background-color: #483e31;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        form button:hover {
+            background-color: #755b3c;
+        }
+
+        /* Back Link */
+        a {
+            text-decoration: none;
+            color: #483e31;
+            font-size: 16px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+
+        a:hover {
+            color: #ca8a31;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <div class="form-wrapper">
+            <h1>Edit Comic</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <label>Title:</label>
+                <input type="text" name="title" value="{{ comic.title }}" required>
+
+                <label>Description:</label>
+                <textarea name="description" required>{{ comic.description }}</textarea>
+
+                <label>Price:</label>
+                <input type="number" name="price" value="{{ comic.price }}" step="1" required>
+
+                <p>Current Image:</p>
+                <img src="{{ url_for('static', filename=comic.image_url) }}" alt="{{ comic.title }}" width="50">
+
+                <label>Upload New Image (if needed):</label>
+                <input type="file" name="image_file" accept=".png,.jpg,.jpeg,.webp">
+
+                <label>Sport Type:</label>
+                <select name="genre" required>
+                    <option value="Horror" {% if comic.genre == 'Horror' %}selected{% endif %}>Horror</option>
+                    <option value="Drama" {% if comic.genre == 'Drama' %}selected{% endif %}>Drama</option>
+                    <option value="Comedy" {% if comic.genre == 'Comedy' %}selected{% endif %}>Comedy</option>
+                    <option value="Detective" {% if comic.genre == 'Detective' %}selected{% endif %}>Detective</option>
+                    <option value="Action" {% if comic.genre == 'Action' %}selected{% endif %}>Action</option>
+                </select>
+
+                <label>
+                    <input type="checkbox" name="is_recommended" {% if comic.is_recommended %}checked{% endif %}>
+                    Recommended
+                </label><br><br>
+
+                <button type="submit">Save Changes</button>
+            </form>
+
+            <a href="{{ url_for('home') }}">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

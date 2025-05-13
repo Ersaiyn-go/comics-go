@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Вход в систему</title>
+    <style>
+       /* Основные стили */
+       body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('{{ url_for("static", filename="img/final.jpg") }}') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        /* Внешний контейнер, который будет держать все содержимое */
+        .page-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.507); 
+        }
+        /* Контейнер для формы */
+        .login-container {
+            background: rgba(208, 193, 170, 0.303);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid #8d5640;
+        }
+
+        /* Заголовок */
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #9d6252;
+            font-weight: 600;
+        }
+
+        /* Мета-данные */
+        label {
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Поля ввода */
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        /* Стили для фокуса на полях */
+        input[type="email"]:focus, input[type="password"]:focus {
+            border-color: #5c85c8;
+            outline: none;
+        }
+
+        /* Кнопка */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #8d5640;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        /* Эффект при наведении на кнопку */
+        button:hover {
+            background-color: #6e3b21;
+            transform: translateY(-2px);
+        }
+
+        /* Ссылки для регистрации */
+        .register-link {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            text-decoration: none;
+            color: #3e230c;
+            transition: color 0.3s ease;
+        }
+
+        .register-link a:hover {
+            color: #d7843b;
+        }
+
+        /* Для мобильных устройств */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px;
+                width: 90%;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Стили для flash-сообщений */
+.flash-message-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 80%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flash-message {
+    background-color: #557181;  /* Зеленый для успеха */
+    color: white;
+    padding: 15px 30px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.8;
+    transition: opacity 0.5s ease;
+}
+
+.flash-message-danger {
+    background-color: #f44336;  /* Красный для ошибок */
+}
+
+.flash-message-container .flash-message.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+    </style>
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message-container">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    <div class="page-container">
+      <div class="login-container">
+        <h2>Sign up</h2>
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Sign up</button>
+        </form>
+        <div class="register-link">
+            <p>Dont have accout? <a href="{{ url_for('register') }}">Create account</a></p>
+        </div>
+      </div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                $('.flash-message-container').fadeOut('slow');
+            }, 900);  // Убираем через 3 секунды
+        });
+    </script>
+</body>
+</html>

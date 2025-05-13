@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dastur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sitegpt.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="navbar">
+            <ul class="nav-links" id="navLinks">
+                <a href="#main">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='img/lastlogo.png') }}" alt="Logo">
+                    </div>
+                </a>
+
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                        <!-- Для админа: кнопки управления комиксами и пользователями -->
+                        <li><a href="{{ url_for('add_comic') }}" class="button button-add">Add Comic</a></li>
+                        <li><a href="{{ url_for('manage_users') }}" class="button button-add">Manage Users</a></li>
+                    {% else %}
+                        <!-- Для обычного пользователя: кнопки для корзины -->
+                        <li><a href="{{ url_for('cart') }}" class="button">Cart 
+                            {% if current_user.cart_items %}
+                                ({{ current_user.cart_items|length }})
+                            {% else %}
+                                (0)
+                            {% endif %}
+                        </a></li>
+                    {% endif %}
+                {% else %}
+                {% endif %}
+                <li><a href="{{ url_for('login') }}" class="button">Change account</a></li>
+            </ul>
+        </nav>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-message-container">
+                {% for category, message in messages %}
+                    <div class="flash-message flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}
+
+        <main>
+            <section id="new">
+                <div class="min">
+                    <form method="GET" action="{{ url_for('home') }}" class="search">
+                        <select name="genre" class="select-filter" onchange="this.form.submit()">
+                            {% for genre in genres %}
+                                <option value="{{ genre }}" {% if selected_genre == genre %}selected{% endif %}>{{ genre }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="lupa"><i class="fa-solid fa-filter"></i></div>  
+                    </form>
+                </div>
+
+                <div class="container">
+                    <div class="comics-grid">
+                        {% for comic in comics %}
+                            <div class="comic">
+                                <img src="{{ url_for('static', filename=comic.image_url) }}" alt="{{ comic.title }}">
+                                <h3>{{ comic.title }}</h3>
+                                <p><strong>Type:</strong> {{ comic.genre }}</p>
+                                {% if comic.is_recommended %}
+                                    <p class="recommended"><strong>Recommended!</strong></p>
+                                {% endif %}
+                                <p>{{ comic.description }}</p>
+                                <p class="price">Price: {{ comic.price }}₸</p>
+
+                                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                                    <!-- Для админа: кнопки добавления и удаления комиксов -->
+                                    <a href="{{ url_for('edit_comic', comic_id=comic.id) }}" class="button button-edit">Edit</a>
+                                    <form action="{{ url_for('delete_comic', comic_id=comic.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="button button-danger" onclick="return confirm('Are you sure you want to delete?');">Delete</button>
+                                    </form>
+                                {% endif %}
+
+                                {% if current_user.is_authenticated and current_user.role != 'admin' %}
+                                    <!-- Для обычного пользователя: кнопка "Add to Cart" -->
+                                    <form action="{{ url_for('add_to_cart', comic_id=comic.id) }}" method="POST" style="display:inline;">
+                                        <button type="submit" class="button button-add">Add to Cart</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>     
+        </main>
+    </div>
+
+<footer class="footer">
+    <p>&copy; 2024 Kazakh Comics Store. All rights reserved.</p>
+    <div class="social-links">
+        <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-twitter"></i></a>
+    </div>
+</footer>   
+<div class="flash-message-container">
+    {% for message in messages %}
+        <div class="flash-message {% if 'success' in message %}flash-message-success{% elif 'danger' in message %}flash-message-danger{% else %}flash-message-default{% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Обычные флэш-сообщения — 2 секунды
+      setTimeout(function () {
+        document.querySelectorAll(".flash-message:not(.flash-warning-long)").forEach(function (el) {
+          el.style.transition = "opacity 0.5s";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 500);
+        });
+      }, 1000);
+  
+      // Для .flash-warning-long — 6 секунд
+      setTimeout(function () {
+        document.querySelectorAll(".flash-message.flash-warning-long").forEach(function (el) {
+          el.style.transition = "opacity 0.5s";
+          el.style.opacity = "0";
+          setTimeout(() => el.remove(), 500);
+        });
+      }, 6000);
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,508 @@
+
+html, body {
+    scroll-behavior: smooth;
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    background: rgba(0, 0, 0, 0.325);
+    background: url('/static/img/back.png') no-repeat center center fixed;  /* Фоновое изображение */ 
+    background-size: cover;
+}
+
+.wrapper {
+    background: rgba(0, 0, 0, 0.696);  /* Прозрачный черный фон с более высокой непрозрачностью */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;  
+}
+
+
+
+/* ----------------NAVIGATION----------------------- */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 70px;   /* Например, 60px или больше, если нужно */
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    background-color: #232D3F;
+    color: #fff;
+}
+
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.navbar .logo img {
+    height: 80px;
+    transition: 0.5s ease;
+}
+.navbar .logo img:hover {
+    transform: translateY(-10%);
+}
+.navbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar li {
+    font-family: 'Zilla Slab', serif;
+    transition: 0.5s ease;
+}
+.navbar li:hover {
+    transform:translateY(-10%)
+}
+.navbar a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* ----------------TRUE------------------- */
+
+.true {
+    height: 45px;
+    margin-bottom: 40px;
+}
+
+/* -----------------WELCOME TO----------------- */
+
+.main {
+    flex: 1;  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    height: 100vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-inline: auto;
+}
+
+/* -----------------WELCOME TO----------------- */
+
+.min {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    height: 7vh;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-inline: auto;
+}
+
+.search {
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.lupa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: 0.3s ease;
+    position: relative;
+    right: 40px;
+}
+.well {
+    text-align: center;
+    color: #232D3F;
+    font-size: 40px;
+    margin-top: -10px;
+    width: 50%;
+    font-family: 'Marhey', sans-serif;
+}
+.small {
+    font-size: 25px;
+    color: #232D3F;
+    font-family: 'Marhey', sans-serif;
+}
+.textsearch {
+    width: 70%;
+    height: 20px;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0 0 10px 1px #35363d;
+    transition: 0.3s ease;
+}
+.textsearch:hover {
+    box-shadow: 0 0 20px 3px #35363d;
+}
+
+
+/* -------------COMICS--------------- */
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.comics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.comics-grid div {
+    background-color: #f3f3f3;
+    padding: 10px;
+    text-align: center;
+}
+
+.comic {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+}
+
+.comic img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.comic h3 {
+    margin: 0;
+    color: #333;
+}
+
+h2 {
+    margin-top: 50PX;
+    font-family: 'Marhey', sans-serif;
+    width: 100%;
+    color:#232D3F;
+    text-align: center;
+}
+
+.comic p {
+    color: #666;
+    font-size: 14px;
+}
+
+.comic .price {
+    font-weight: bold;
+    color: #333;
+}
+
+.button {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 4px 2px;
+    background-color: #7b96bb;  /* Серо-голубой, нейтральный цвет */
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+    background-color: #557198;
+    transform: translateY(-2px);
+}
+
+
+.button-danger {
+    background-color: #c85c5c;
+}
+
+.button-danger:hover {
+    background-color: #b04d4d;
+}
+
+.button-edit {
+    background-color: #5c85c8;
+}
+
+.button-edit:hover {
+    background-color: #4d6fb0;
+}
+
+
+.button-add {
+    background-color: #7b96bb;
+}
+
+.button-add:hover {
+    background-color: #5977a0;
+}
+
+
+
+/* Основной стиль для фильтра */
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: -10px;
+    margin-top: 20px;
+}
+
+/* Стиль для метки */
+form label {
+    font-size: 16px;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стиль для выпадающего списка */
+form select {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #7b96bb;
+    background-color: #aabcd4;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+/* Эффект при наведении */
+form select:hover {
+    border-color: #4CAF50;
+}
+
+/* Стиль для выделенного элемента */
+form select:focus {
+    outline: none;
+    border-color: #45a049;
+}
+
+/* Дополнительный стиль для опций */
+form option {
+    padding: 10px;
+    margin-top: 50px;
+}
+
+
+input[type="text"], input[type="number"], textarea, input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+
+button {
+    margin-top: 10px;
+}
+
+select {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+
+
+.select-filter {
+    width: 70%;
+    height: 40px;
+    border-radius: 5px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0 0 10px 1px #35363d;
+    transition: 0.3s ease;
+    font-size: 16px;
+    appearance: none;   /* Убираем стандартную стрелку */
+    background-color: rgb(255, 255, 255);
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='gray' class='bi bi-caret-down-fill' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C2.062 5.207 2.384 4.5 3.006 4.5h9.988c.622 0 .944.707.555 1.158l-4.796 5.482a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+
+.select-filter:hover {
+    box-shadow: 0 0 20px 3px #35363d;
+    cursor: pointer;
+}
+
+.footer {
+    background-color: #232D3F;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    width: 100%;
+}
+
+
+.footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.social-links {
+    margin-top: 10px;
+}
+
+.social-links a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+    color: #4a69bd;
+}
+
+
+/* Стили для корзины */
+.cart-container {
+    margin: 20px auto;
+    max-width: 1200px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.844);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #817c7c;
+}
+
+.cart-table th {
+    background-color: #f4f4f4;
+}
+
+.cart-item-img {
+    max-width: 100px;
+    height: auto;
+}
+
+/* Кнопка оформления заказа */
+.cart-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-checkout {
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.button-checkout:hover {
+    background-color: #2980b9;
+}
+
+/* Мобильная адаптивность */
+@media (max-width: 768px) {
+    .cart-table th, .cart-table td {
+        font-size: 14px;
+    }
+
+    .cart-item-img {
+        width: 80px;
+    }
+}
+
+/* Стили для кнопки оформления заказа */
+.cart-footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.button-checkout {
+    padding: 10px 20px;
+    background-color: #27ae60;
+    color: white;
+    border-radius: 5px;
+}
+
+.button-checkout:hover {
+    background-color: #2ecc71;
+}
+
+/* Стили для flash-сообщений */
+.flash-message-container {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    max-width: 80%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flash-message {
+    background-color: #557181;  /* Зеленый для успеха */
+    color: white;
+    padding: 15px 30px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    opacity: 0.8;
+    transition: opacity 0.5s ease;
+}
+
+.flash-message-danger {
+    background-color: #f44336;  /* Красный для ошибок */
+}
+
+.flash-warning-long {
+    background-color: #ffeeba;
+    color: #8a6d3b;
+}
+
+.flash-warning-long .flash-message-container .flash-message.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.empty-cart-message {
+    font-size: 2rem; /* Makes the text bigger */
+    font-weight: bold; /* Adds emphasis */
+    text-align: center; /* Centers the text horizontally */
+    color: #a8a8a8; /* Dark text for good contrast */
+    position: absolute; /* Absolute positioning to center the text */
+    top: 50%; /* Vertically centers the text */
+    left: 50%; /* Horizontally centers the text */
+    transform: translate(-50%, -50%); /* Ensures exact centering */
+    font-family: 'Arial', sans-serif; /* Sets a modern font */
+    letter-spacing: 1px; /* Slightly spaces out the letters */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow for depth */
+}

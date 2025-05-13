@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sitegpt.css') }}">
+    <style>
+        /* Общие стили для страницы оформления заказа */
+.checkout-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.checkout-item {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-item img {
+    width: 100px;
+    height: 150px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+
+.checkout-item-details {
+    flex: 1;
+}
+
+.checkout-item-details h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #323232;
+}
+
+.checkout-item-details p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #3a3a3a;
+}
+
+/* Стили для итоговой суммы и кнопки подтверждения заказа */
+.checkout-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.checkout-footer p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.button-confirm {
+    padding: 12px 30px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.button-confirm:hover {
+    background-color: #2980b9;
+}
+
+h1 {
+    align-items: center;
+    text-align: center;
+}
+/* Адаптивность */
+@media (max-width: 768px) {
+    .checkout-items {
+        grid-template-columns: 1fr;
+    }
+
+    .checkout-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .button-confirm {
+        margin-top: 20px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <nav class="navbar">
+            <ul class="nav-links" id="navLinks">
+                <a href="{{ url_for('home') }}">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='img/lastlogo.png') }}" alt="Logo">
+                    </div>
+                </a>
+
+                {% if current_user.is_authenticated %}
+                    {% if current_user.role == 'admin' %}
+                        <!-- Для админа: кнопки управления комиксами и пользователями -->
+                        <li><a href="{{ url_for('add_comic') }}" class="button button-add">Add Comic</a></li>
+                        <li><a href="{{ url_for('manage_users') }}" class="button button-add">Manage Users</a></li>
+                    {% else %}
+                        <!-- Для обычного пользователя: кнопки для корзины -->
+                        <li><a href="{{ url_for('cart') }}" class="button">Cart 
+                            {% if current_user.cart_items %}
+                                ({{ current_user.cart_items|length }})
+                            {% else %}
+                                (0)
+                            {% endif %}
+                        </a></li>
+                    {% endif %}
+                {% else %}
+                {% endif %}
+                <li><a href="{{ url_for('login') }}" class="button">Change account</a></li>
+            </ul>
+        </nav>
+
+        <main>
+
+            {% if cart_items %}
+                <div class="checkout-container">
+                    <ul class="checkout-items">
+                        {% for item in cart_items %}
+                            <li class="checkout-item">
+                                <img src="{{ url_for('static', filename=item.comic.image_url) }}" alt="{{ item.comic.title }}">
+                                <div class="checkout-item-details">
+                                    <h3>{{ item.comic.title }}</h3>
+                                    <p><strong>Цена:</strong> {{ item.comic.price }}₸</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="checkout-footer">
+                        <p><strong>Итоговая сумма: {{ total_price }}₸</strong></p>
+                        <form action="{{ url_for('confirm_order') }}" method="POST">
+                            <button type="submit" class="button button-confirm">Подтвердить заказ</button>
+                        </form>
+                    </div>
+                </div>
+            {% else %}
+                <p>В вашей корзине нет товаров для оформления заказа.</p>
+            {% endif %}
+        </main>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2024 Kazakh Comics Store. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+    </footer>
+</body>
+</html>
